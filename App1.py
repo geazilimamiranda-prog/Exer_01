@@ -8,59 +8,70 @@ st.set_page_config(
 )
 
 # 1. Título principal com ícone amigável
-st.title("🧮 Minha Primeira Calculadora em Streamlit")
-st.write("Um aplicativo simples e elegante desenvolvido com Python para iniciantes.")
+st.title("🧮 Calculadora com Botões de Operação")
+st.write("Um aplicativo elegante e interativo desenvolvido em Python com Streamlit para iniciantes.")
 
 # Divisor visual
 st.markdown("---")
 
-# Criando colunas para organizar os campos de entrada de forma elegante
+# 2. Dois campos de entrada numérica com valores padrão definidos como 0.0
 col1, col2 = st.columns(2)
 
 with col1:
-    # 2. Primeiro campo de entrada numérica com valor padrão 0.0
     num1 = st.number_input("Digite o primeiro número:", value=0.0, format="%.2f")
 
 with col2:
-    # 2. Segundo campo de entrada numérica com valor padrão 0.0
     num2 = st.number_input("Digite o segundo número:", value=0.0, format="%.2f")
 
-# 3. Componente de seleção para escolher a operação
-operacao = st.selectbox(
-    "Escolha a operação desejada:",
-    ("Soma (+)", "Subtração (-)", "Multiplicação (*)", "Divisão (/)")
-)
+st.markdown("### Escolha a operação:")
 
-st.markdown("")
+# 3 & 4. Botões de ação para cada operação matemática
+# Criamos 4 colunas para distribuir os botões lado a lado de forma elegante
+btn_col1, btn_col2, btn_col3, btn_col4 = st.columns(4)
 
-# 4. Botão de ação com o texto "Calcular"
-if st.button("Calcular", type="primary", use_container_width=True):
-    resultado = None
-    erro = None
-    
-    # Lógica dos cálculos baseada na seleção
-    if operacao == "Soma (+)":
+resultado = None
+erro = None
+operacao_realizada = None
+
+with btn_col1:
+    if st.button("➕ Soma", use_container_width=True):
         resultado = num1 + num2
-    elif operacao == "Subtração (-)":
+        operacao_realizada = f"{num1} + {num2} = {resultado}"
+
+with btn_col2:
+    if st.button("➖ Subtração", use_container_width=True):
         resultado = num1 - num2
-    elif operacao == "Multiplicação (*)":
+        operacao_realizada = f"{num1} - {num2} = {resultado}"
+
+with btn_col3:
+    if st.button("✖️ Multiplicação", use_container_width=True):
         resultado = num1 * num2
-    elif operacao == "Divisão (/)":
-        # 5. Tratamento de divisão por zero
+        operacao_realizada = f"{num1} × {num2} = {resultado}"
+
+with btn_col4:
+    if st.button("➗ Divisão", use_container_width=True):
+        # 5. Se for divisão por zero, exiba uma mensagem de alerta/erro amigável (st.error)
         if num2 == 0:
             erro = "⚠️ Erro: Não é possível realizar divisão por zero!"
         else:
             resultado = num1 / num2
+            operacao_realizada = f"{num1} ÷ {num2} = {resultado}"
 
-    # 5. Exibição dos resultados ou mensagens de erro
-    if erro:
-        st.error(erro)
-    else:
-        st.markdown("---")
-        st.success("Cálculo realizado com sucesso! 🎉")
-        # Mostrando o resultado em grande destaque usando st.metric
-        st.metric(label="Resultado Final", value=f"{resultado:.4f}".rstrip('0').rstrip('.'))
+# 5. Exibição dos resultados ou mensagens de erro após clicar em algum botão
+if erro:
+    st.markdown("---")
+    st.error(erro)
+elif resultado is not None:
+    st.markdown("---")
+    st.success("Cálculo realizado com sucesso! 🎉")
+    
+    # Formatando o resultado para remover decimais desnecessários caso seja inteiro
+    valor_formatado = f"{resultado:.4f}".rstrip('0').rstrip('.')
+    
+    # Mostrando o resultado em grande destaque usando st.metric
+    st.metric(label="Resultado Final", value=valor_formatado)
+    st.caption(f"Expressão: {operacao_realizada}")
 
 # Rodapé explicativo
 st.markdown("---")
-st.caption("Desenvolvido com ❤️ usando Python e Streamlit.")
+st.caption("Desenvolvido com ❤️ para iniciantes em Vibe Coding.")
