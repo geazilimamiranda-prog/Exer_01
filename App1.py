@@ -7,7 +7,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Estilização CSS para os botões com relevo e para o balão de fala animado
+# Estilização CSS personalizada para dar efeito de RELEVO nos botões
 st.markdown("""
     <style>
     /* Estilo com relevo e sombra para os botões */
@@ -24,39 +24,12 @@ st.markdown("""
         transform: translateY(1px);
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
     }
-
-    /* Estilo do balão de fala moderno */
-    .speech-bubble {
-        position: relative;
-        background: #f0f8ff;
-        border: 2px solid #0068c9;
-        border-radius: 12px;
-        padding: 15px 20px;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        box-shadow: 0px 4px 12px rgba(0, 104, 201, 0.15);
-        animation: fadeIn 0.4s ease-in-out;
-    }
-    .speech-bubble:after {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: 30px;
-        margin-left: -10px;
-        border-width: 10px;
-        border-style: solid;
-        border-color: transparent transparent #0068c9 transparent;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-8px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
     </style>
 """, unsafe_allow_html=True)
 
 # 1. Título principal com ícone amigável
-st.title("🧮 Calculadora com Balão Interativo")
-st.write("Selecione a operação, informe os números e acione o cálculo para ver a mágica acontecer.")
+st.title("🧮 Calculadora com Botões de Relevo")
+st.write("Selecione a operação, insira os números e acione o botão para obter o resultado.")
 
 st.markdown("---")
 
@@ -99,7 +72,7 @@ st.info(f"Operação selecionada: **{st.session_state.operacao_selecionada}**")
 
 st.markdown("### 2. Clique para acionar o resultado:")
 
-# 3, 4 & 5. Botão de ação com relevo para acionar e obter o resultado
+# 3, 4 & 5. Botão de ação com RELEVO para acionar e obter o resultado
 if st.button("🚀 CALCULAR AGORA", type="primary", use_container_width=True):
     op = st.session_state.operacao_selecionada
     resultado = None
@@ -122,21 +95,11 @@ if st.button("🚀 CALCULAR AGORA", type="primary", use_container_width=True):
         st.error(erro)
     else:
         st.success("Cálculo efetuado com sucesso! 🎉")
-        
-        # Formatando o valor e criando o balão de fala personalizado
         valor_formatado = f"{resultado:.4f}".rstrip('0').rstrip('.')
-        
-        st.markdown(f"""
-            <div class="speech-bubble">
-                <h4 style="margin: 0; color: #0068c9;">💬 Mensagem do Sistema:</h4>
-                <p style="margin: 5px 0 0 0; font-size: 16px; color: #31333F;">
-                    O resultado da operação <b>{op}</b> entre <b>{num1}</b> e <b>{num2}</b> é: <b style="color: #2b9348; font-size: 18px;">{valor_formatado}</b>
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # Mostrando também a métrica tradicional em destaque
-        st.metric(label=f"Resumo Final ({op})", value=valor_formatado)
+        st.metric(label=f"Resultado ({op})", value=valor_formatado)
+
+st.markdown("---")
+st.caption("Desenvolvido com ❤️ usando Python e Streamlit.")
 
 st.markdown("---")
 st.caption("Desenvolvido com ❤️ usando Python e Streamlit.")
